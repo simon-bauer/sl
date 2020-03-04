@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+
+DEAD_TIME=$1
+SECONDS=$DEAD_TIME
+
+while read line
+do
+    sleep 0.1
+    if (($SECONDS >= $DEAD_TIME)); then
+        echo $line
+        SECONDS=0
+    fi
+done
+

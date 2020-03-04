@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+
+SOURCE_ROOT=~/sl
+BUILD_ROOT=~/sl/build
+
+inotifywait -m -r -e CLOSE_WRITE --exclude "build/|.git/|goutputstream" $SOURCE_ROOT | $SOURCE_ROOT/signal_dead_time 2 | while read line
+do
+    echo
+    echo "*** Trigger:" $line 
+    cd $SOURCE_ROOT
+    git add -A && git commit -m "auto checkin"
+
+    cd $BUILD_ROOT
+    make && tests/sl_tests
+    
+    echo "******************"
+done
+
